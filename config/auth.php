@@ -3,7 +3,7 @@
 return [
     'defaults' => [
         'guard' => 'api',
-        'passwords' => 'users',
+        // 'passwords' => 'users',
     ],
 
     'guards' => [
@@ -15,8 +15,11 @@ return [
 
     'providers' => [
         'users' => [
-            'driver' => 'eloquent',
-            'model' => \App\User::class
+            // 'driver' => 'eloquent',
+            'driver' => 'customuserprovider',
+            // 'model' => \App\User::class
+            'model' => \App\Credential::class,
+            'table' => 'credentials'
         ]
     ]
 ];

@@ -36,3 +36,6 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 });
 
 $router->post('/api/oauth/token', 'AuthController@token');
+$router->post('/va/bills', 'BillsController@index');
+
+$router->get('/signature', 'AuthController@signature');
