@@ -1,4 +1,7 @@
 <?php
+header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
+header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token, Authorization, Accept,charset,boundary, Content-Length, X-BCA-Key, X-BCA-Timestamp, X-BCA-Signature');
+header('Access-Control-Allow-Origin: http://localhost:3000');
 
 /*
 |--------------------------------------------------------------------------
@@ -37,5 +40,9 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
 $router->post('/api/oauth/token', 'AuthController@token');
 $router->post('/va/bills', 'BillsController@index');
+$router->post('/va/payments', 'PaymentsController@index');
 
-$router->get('/signature', 'AuthController@signature');
+$router->get('/signature-bill', 'AuthController@signatureBill');
+$router->get('/signature-payment', 'AuthController@signaturePayment');
+
+$router->get('/signature-bca', 'AuthController@signBCA');

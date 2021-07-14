@@ -50,7 +50,7 @@ class AuthController extends Controller
         $auth_decode    = base64_decode($auth_encode);
         $client_id      = explode(":", $auth_decode)[0];
         $client_secret  = explode(":", $auth_decode)[1];
-
+        
         $grant_type = $request->input('grant_type');
 
         if($auth_prefix !== 'Basic'){
@@ -64,7 +64,7 @@ class AuthController extends Controller
 
             return response()->json($response,504);
         }
-
+        
         if($grant_type !== 'client_credentials') {
             $response = [
                 'error_code'=> "ESB-14-008",
@@ -109,11 +109,11 @@ class AuthController extends Controller
         // echo $decode;
     }
 
-    public function signature(){
+    public function signatureBill(Request $request){
         $api_secret = 'e1376d34-8892-42ed-853e-7b37d4f6d4ae';
         $http_method = 'POST';
         $relative_url = '/va/bills';
-        $access_token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6OTAwMFwvYXBpXC9vYXV0aFwvdG9rZW4iLCJpYXQiOjE2MjU5MDQ5MTMsImV4cCI6MTYyNTkwODUxMywibmJmIjoxNjI1OTA0OTEzLCJqdGkiOiJrMEFzbUlCaE5uUTZkS3J2Iiwic3ViIjoxLCJwcnYiOiJkOGUwMDFjODhkMTdiNDU2YjJiZjRjMzdkOGNlMzljNTJhOTI4OGI2In0.xCSHTJYiyzxxl2Nu87PdfQqexW-pFplCC3tCTRMQeWI';
+        $access_token = $request->bearerToken();
         $time_stamp = '2021-07-10T13:00:00.234Z';
         $request_body = '{"CompanyCode":"13559","CustomerNumber":"123456789","RequestID":"201507131507262221400000001975","ChannelType":"6014","TransactionDate":"10\/07\/2021 10:07:40","AdditionalData":"lalala"}';
         
@@ -129,5 +129,48 @@ class AuthController extends Controller
         // Signature = HMAC-SHA256(apiSecret, StringToSign)
         // StringToSign = HTTPMethod+":"+RelativeUrl+":"+AccessToken+":"+Lowercase(HexEncode(SHA-256(RequestBody)))+":"+Timestamp
 
+    }
+
+    public function signaturePayment(Request $request){
+        $api_secret = 'e1376d34-8892-42ed-853e-7b37d4f6d4ae';
+        $http_method = 'POST';
+        $relative_url = '/va/payments';
+        $access_token = $request->bearerToken();
+        $time_stamp = '2021-07-10T13:00:00.234Z';
+        $request_body = '{"CompanyCode":"13559","CustomerNumber":"123456789","RequestID":"201507131507262221400000001975","ChannelType":"6014","TransactionDate":"10\/07\/2021 10:07:40","AdditionalData":"lalala"}';
+        
+        $hash_body = strtolower(hash('sha256', $request_body));
+        $string_to_sign = $http_method.":".$relative_url.":".$access_token.":".$hash_body.":".$time_stamp;
+        $signature = hash_hmac('sha256', $string_to_sign, $api_secret);
+
+        echo $signature;
+
+        //hash('sha256',$string)
+        //str2hex($string)
+
+        // Signature = HMAC-SHA256(apiSecret, StringToSign)
+        // StringToSign = HTTPMethod+":"+RelativeUrl+":"+AccessToken+":"+Lowercase(HexEncode(SHA-256(RequestBody)))+":"+Timestamp
+
+    }
+
+    public function signBCA(Request $request){
+        $api_secret = '205f97ae-c0c1-4f1d-905d-b57fdd8f93eb';
+        $http_method = 'GET';
+        $relative_url = '/va/payments?CompanyCode=80888&RequestID=8161964775';
+        $access_token = 'c4iycaKpXkCK9KN1KICbb0LYz0rW3DncyVmSEleIJv3arrRsySktz3';
+        $time_stamp = '2021-07-12T14:00:00.234Z';
+        // $request_body = 'CompanyCode=80888&RequestID=8161964775';
+        
+        // $hash_body = strtolower(hash('sha256', $request_body));
+        $hash_body = '';
+        $string_to_sign = $http_method.":".$relative_url.":".$access_token.":".$hash_body.":".$time_stamp;
+        $signature = hash_hmac('sha256', $string_to_sign, $api_secret);
+
+
+        echo $signature;
+
+        //GET https://api.klikbca.com/va/payments?CompanyCode=80888&RequestID=8161964775
+
+        //27cffffa8769d149e2cd5b38fee7fd0ccedb9a1e575d7f4ea6e7a19a7804bd2f
     }
 }

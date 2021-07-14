@@ -26,3 +26,7 @@ eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6OTAwMFw
 eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6OTAwMFwvYXBpXC9sb2dpbiIsImlhdCI6MTYyNTg4ODA3MSwiZXhwIjoxNjI1ODkxNjcxLCJuYmYiOjE2MjU4ODgwNzEsImp0aSI6ImZtS2ZMOWhuczUybXBCMWIiLCJzdWIiOjEsInBydiI6ImQ4ZTAwMWM4OGQxN2I0NTZiMmJmNGMzN2Q4Y2UzOWM1MmE5Mjg4YjYifQ.MQIADnW7LlkZj4CaaP5cCmRt0tw1H_j6oN_pD1k-19U
 
 https://dev.to/ndiecodes/build-a-jwt-authenticated-api-with-lumen-2afm
+
+
+ATASI CORS DI LUMEN 
+https://stackoverflow.com/questions/63864609/axios-getting-blocked-by-laravel-7-cors-no-access-control-allow-origin-header answer by romulos

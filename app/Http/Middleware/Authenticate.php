@@ -42,18 +42,34 @@ class Authenticate
 
         // $api_secret     = $this->auth->user()->getApiSecret(); dari db
         $api_secret     = env('X_BCA_API_KEY') === $request->header('X-BCA-Key') ? env('X_BCA_API_SECRET') : '';
+        
         $http_method    = $request->method();
         $access_token   = $request->bearerToken();
-        $request_body   = json_encode($request->json()->all());
+        $request_body   = json_encode($request->json()->all(),JSON_UNESCAPED_SLASHES);
+        // $request_body   = $request->json()->all();
         $hash_body      = strtolower(hash('sha256', $request_body));
+        
         $time_stamp     = $request->header('X-BCA-Timestamp');
         $xbca_signature = $request->header('X-BCA-Signature');
         $relative_url   = str_replace(url('/'), "", $request->url());
         
         $string_to_sign = $http_method.":".$relative_url.":".$access_token.":".$hash_body.":".$time_stamp;
-        $calc_signature = hash_hmac('sha256', $string_to_sign, $api_secret);
+        $calc_signature = hash_hmac('sha256', $api_secret, $string_to_sign);
 
+        // // echo $string_to_sign;
+        // // print_r($xbca_signature);
+        // // echo " --- ";
+        // var_dump($xbca_signature);
+        // var_dump($calc_signature);
+        // // print_r();
+        // // print_r($request->json()->all());
+        // // print_r($request_body);
+        // // print_r(strtolower(hash('sha256', $request_body)));
+
+        // exit;
+        // $valid = true; // sementara di bypass dulu samapi ketemu bagaiamana yang benar,
         if($xbca_signature !== $calc_signature){
+        // if(!$valid){
             return response()->json([
                 'errorCode' => '...',
                 'errorMessage'=>[
